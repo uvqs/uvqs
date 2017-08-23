@@ -173,20 +173,6 @@ def pair_up(targ, qsos, sep, z_targ=None, silent=False):
     # Return
     return idxt, idxq, d2d
 
-####
-def new_z1qso(z1qso_fil=None):
-    """
-    Read in new z1QSO with good z
-    """
-
-    if z1qso_fil is None:
-        z1qso_fil = os.getenv('z1Q')+'/Analysis/'+'z1qso_new.fits.gz'
-
-    print('z1qso_analy: Reading z1qso data from {:s}'.format(z1qso_fil))
-    #z1qso = QTable.read(z1qso_fil)
-    z1qso = Table.read(z1qso_fil)
-
-    return z1qso
 
 ####
 def mk_z1qso_table(milliq=None, outfil=None, only_new=True):

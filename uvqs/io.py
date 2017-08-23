@@ -1,6 +1,10 @@
 """ I/O routines reltaed to UVQS
 """
 
+from pkg_resources import resource_filename
+
+from astropy.table import Table
+
 def load_milliq(milliq_fil=None, good_z=False, good_FUV=False, good_NUV=False,
                 verbose=True):
     """
@@ -27,7 +31,7 @@ def load_milliq(milliq_fil=None, good_z=False, good_FUV=False, good_NUV=False,
         print('z1qso_analy: Reading known quasars from {:s}'.format(milliq_fil))
 
     # Load
-    milliq = Table(fits.open(milliq_fil)[1].data)
+    milliq = Table.read(milliq_fil)
     msk = milliq['Z'] == milliq['Z']
 
     # Restrict to solid redshifts
@@ -69,8 +73,7 @@ def load_z1qso(z1qso_fil=None, cand_fil=None, good_z=False, new=None, NOSTOP=Fal
     #    pdb.set_trace()  # You probably want the UVQ DR1
 
     if z1qso_fil is None:
-        z1qso_fil = os.getenv('z1Q')+'/Database/'+'uvq_dr1_sources.fits'
-        #z1qso_fil = os.getenv('z1Q')+'/Analysis/'+'z1qso_final_spec.fits.gz'
+        z1qso_fil = resource_filename('uvqs', 'data/UVQS/uvqs_dr1_sources.fits')
 
     print('z1qso_analy: Reading z1qso data from {:s}'.format(z1qso_fil))
 
@@ -119,6 +122,18 @@ def load_z1qso(z1qso_fil=None, cand_fil=None, good_z=False, new=None, NOSTOP=Fal
 
     return z1qso, cand
 
+####
+def load_new_z1qso(z1qso_fil=None):
+    """ Read in new z1QSO with good z
+    """
+
+    if z1qso_fil is None:
+        z1qso_fil = resource_filename('uvqs', 'data/UVQS/z1qso_new.fits.gz')
+
+    print('z1qso_analy: Reading z1qso data from {:s}'.format(z1qso_fil))
+    z1qso = Table.read(z1qso_fil)
+
+    return z1qso
 
 def load_uvq_dr1(verbose=True):
     """
