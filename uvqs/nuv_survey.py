@@ -224,7 +224,7 @@ def sky_plot(i_cand, outfil=None, cand_only=False, cut_z1q=True):
 
 
 #
-def color_cut(galex, wise, W1_W2=0.6):
+def color_cut(wise, W1_W2=0.6):
     '''
     Performs the color cuts for the NUV selection
 
