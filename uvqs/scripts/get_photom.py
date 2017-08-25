@@ -37,17 +37,28 @@ def main(pargs):
 
     """
     import subprocess
+    from pkg_resources import resource_filename
 
     # URLs
-    url_page = 'http://specdb.ucsc.edu/'
-    url = url_page+'IGMspec_DB_{:s}.hdf5'.format(pargs.version)
-    
-    # wget command
-    subprocess.call(['wget', '--continue', '--timestamping', url])
+    urls = []
+    newfiles = []
+    # MIS
+    urls.append('https://www.dropbox.com/s/zq52f606afcgmlk/GALEX_MIS_xavier_2014apr18.fit.gz?dl=0')
+    newfiles.append(resource_filename('uvqs', 'data/UVQS/GALEX_MIS_xavier_2014apr18.fit.gz'))
+    # Original WISE (FUV)
+    urls.append('https://www.dropbox.com/s/y9ejblkf3zwgiw6/GALEX_NODUP_WISE_2014apr16.fits.gz?dl=0')
+    newfiles.append(resource_filename('uvqs', 'data/UVQS/GALEX_NODUP_WISE_2014apr16.fits.gz'))
+    # NUV WISE
+    urls.append('https://www.dropbox.com/s/1m38btzj1aole2i/GALEX_NODUP_NUV_WISE_2015apr06.fits.gz?dl=0')
+    newfiles.append(resource_filename('uvqs', 'data/UVQS/GALEX_NODUP_NUV_WISE_2015apr06.fits.gz'))
+    # NUV GALEX
+    urls.append('https://www.dropbox.com/s/3j3th9fslz633bu/GALEX_NODUP_NUV_xavier_2015apr06.fits.gz?dl=0')
+    newfiles.append(resource_filename('uvqs', 'data/UVQS/GALEX_NODUP_NUV_xavier_2015apr06.fits.gz'))
+    # Original GALEX (FUV)
+    urls.append('https://www.dropbox.com/s/quybab7xzo57lcv/GALEX_NODUP_xavier_2014apr16.fits.gz?dl=0')
+    newfiles.append(resource_filename('uvqs', 'data/UVQS/GALEX_NODUP_xavier_2014apr16.fits.gz'))
 
-if __name__ == '__main__':
-    # Check for wget
-    if not any(os.access(os.path.join(path, 'wget'), os.X_OK) for path in os.environ["PATH"].split(os.pathsep)):
-        raise RuntimeError("You need to install wget in your PATH")
-    # Giddy up
-    main()
+    # wget command
+    for ss,url in enumerate(urls):
+        subprocess.call(['wget', '--continue', '--timestamping', url, '-O', newfiles[ss]])
+
